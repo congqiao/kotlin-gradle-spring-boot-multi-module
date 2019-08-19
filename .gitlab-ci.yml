@@ -1,0 +1,23 @@
+variables:
+  GRADLE_USER_HOME: $CI_PROJECT_DIR/.cache/gradle/
+
+image: adoptopenjdk/openjdk8:alpine
+
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - .cache
+    - "**/build"
+
+build:
+  stage: build
+  script:
+    - ./gradlew assemble
+  artifacts:
+    paths:
+      - "**/build/libs/*.jar"
+
+test:
+  stage: test
+  script:
+    - ./gradlew check
